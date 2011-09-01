@@ -6,9 +6,9 @@ namespace MSTest.Contrib.Tests
     public class AssertTests
     {
         [Test]
-        public void TESTNAME()
+        public void That_()
         {
-            
+            Assert.That();
         }
     }
 }
