@@ -3,39 +3,23 @@ using System.Globalization;
 
 namespace MSTest.Contrib
 {
-    public interface IAssertCommunicator
-    {
-        void FailTest(string messageTemplate, params object[] parameters);
-    }
-
-    public class AssertCommunicator : IAssertCommunicator
-    {
-        public void FailTest(string messageTemplate, params object[] parameters)
-        {
-            Assert.Fail(messageTemplate, parameters);
-        }
-    }
-
     public class Assert
     {
-        public static IAssertCommunicator AssertCommunicator;
-
         public static void Throws<T>(Action action, string expectedExceptionMessage = null) 
             where T: Exception
         {
+            var constraint = new ExpectedExceptionConstraint(typeof(T), expectedExceptionMessage);
             try
             {
                 action.Invoke();
             }
             catch (Exception ex)
             {
-                Assert.IsInstanceOfType(ex, typeof(T));
+                constraint.ActualException = ex;
             }
+            constraint.Verify();
         }
-
-
-
-
+        
         #region MSTest Asserts
 
         public static void IsTrue(bool condition)
