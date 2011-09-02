@@ -3,11 +3,37 @@ using System.Globalization;
 
 namespace MSTest.Contrib
 {
+    public interface IAssertCommunicator
+    {
+        void FailTest(string messageTemplate, params object[] parameters);
+    }
+
+    public class AssertCommunicator : IAssertCommunicator
+    {
+        public void FailTest(string messageTemplate, params object[] parameters)
+        {
+            Assert.Fail(messageTemplate, parameters);
+        }
+    }
+
     public class Assert
     {
-        public static void That()
-        { 
+        public static IAssertCommunicator AssertCommunicator;
+
+        public static void Throws<T>(Action action, string expectedExceptionMessage = null) 
+            where T: Exception
+        {
+            try
+            {
+                action.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(T));
+            }
         }
+
+
 
 
         #region MSTest Asserts
