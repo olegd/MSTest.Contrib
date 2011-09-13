@@ -2,7 +2,7 @@ using System;
 
 namespace MSTest.Contrib
 {
-    public class ExpectedExceptionConstraint
+    public class ExpectedExceptionConstraint : IConstraint
     {
         public Type ExpectedException;
         public string ExceptionMessageShouldContain { get; set; }
@@ -14,7 +14,7 @@ namespace MSTest.Contrib
             ExceptionMessageShouldContain = exceptionMessageShouldContain;
         }
 
-        public void Verify()
+        public virtual void Verify()
         {
             if (ActualException == null)
             {

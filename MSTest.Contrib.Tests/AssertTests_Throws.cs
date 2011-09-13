@@ -1,23 +1,35 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using NUnit.Mocks;
 
 namespace MSTest.Contrib.Tests
 {
     [TestFixture]
-    public class AssertTests_Throws
+    public class AssertTests
     {
         [Test]
-        public void ExpectedArgumentException_CodeThrowsArgumentException_Passes()
+        public void Throws_CallsVerifyOnConstraint()
         {
-//            Mock<IAssertCommunicator> _assertCommunicatorMock;
-
-//            Assert.AssertCommunicator
-
-            Assert.Throws<ArgumentException>(
+            var constraintMock = new Mock<ExpectedExceptionConstraint>(typeof(ArgumentException), "");
+            
+            Assert.Throws(constraintMock.Object,
                 () => { throw new ArgumentException(); }
             );
+
+            constraintMock.Verify(x => x.Verify(), Times.Once());
+        }
+
+        [Test]
+        public void Throws_InvokesAction()
+        {
+            var constraintMock = new Mock<ExpectedExceptionConstraint>(typeof(ArgumentException), "");
+
+            bool actionWasInvoked = false;
+            Assert.Throws(constraintMock.Object,
+                () => { actionWasInvoked = true; }
+            );
+
+            Assert.IsTrue(actionWasInvoked);
         }
     }
 }

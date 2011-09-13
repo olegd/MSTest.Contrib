@@ -45,6 +45,7 @@
     <Compile Include="AssertFailedException.cs" />
     <Compile Include="ExpectedExceptionConstraint.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IConstraint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
