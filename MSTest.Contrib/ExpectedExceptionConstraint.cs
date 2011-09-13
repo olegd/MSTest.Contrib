@@ -8,7 +8,7 @@ namespace MSTest.Contrib
         public string ExceptionMessageShouldContain { get; set; }
         public Exception ActualException { get; set; }
 
-        public ExpectedExceptionConstraint(Type expectedException, string exceptionMessageShouldContain)
+        public ExpectedExceptionConstraint(Type expectedException, string exceptionMessageShouldContain = null)
         {
             ExpectedException = expectedException;
             ExceptionMessageShouldContain = exceptionMessageShouldContain;
