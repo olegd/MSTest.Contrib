@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Assert.cs" />
     <Compile Include="AssertFailedException.cs" />
+    <Compile Include="Constraint\Is.cs" />
+    <Compile Include="Constraint\ObjectsAreEqual.cs" />
     <Compile Include="ExpectedExceptionConstraint.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IConstraint.cs" />

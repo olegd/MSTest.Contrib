@@ -2,6 +2,6 @@ namespace MSTest.Contrib
 {
     public interface IConstraint
     {
-        void Verify();
+        void Verify(object actual);
     }
 }

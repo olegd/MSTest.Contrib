@@ -10,45 +10,49 @@ namespace MSTest.Contrib.Tests
         public void Verify_ExceptionWasntThrown_ThrowsException()
         {
             var constraint = CreateConstraint(typeof(ArgumentNullException));
-            constraint.ActualException = null;
 
-            NUnit.Framework.Assert.Throws<AssertFailedException>(constraint.Verify);
+            Exception actual = null;
+
+            NUnit.Framework.Assert.Throws<AssertFailedException>(
+                () => constraint.Verify(actual));
         }
 
         [Test]
         public void Verify_ExceptionWasThrown_DoesNotThrowException()
         {
             var constraint = CreateConstraint(typeof(ArgumentNullException));
-            constraint.ActualException = new ArgumentNullException();
-
-            constraint.Verify();
+            
+            Exception actual = new ArgumentNullException();
+            
+            constraint.Verify(actual);
         }
 
         [Test]
         public void Verify_ExceptionWasThrownButOfWrongType_ThrowsException()
         {
             var constraint = CreateConstraint(typeof(ArgumentNullException));
-            constraint.ActualException = new IndexOutOfRangeException();
+            var actualException = new IndexOutOfRangeException();
 
-            NUnit.Framework.Assert.Throws<AssertFailedException>(constraint.Verify);
+            NUnit.Framework.Assert.Throws<AssertFailedException>(
+                () => constraint.Verify(actualException));
         }
 
         [Test]
         public void Verify_ExceptionThrownMessageDoesntContainExpectedString_ThrowsException()
         {
             var constraint = CreateConstraint(typeof(ArgumentNullException), "argument1");
-            constraint.ActualException = new ArgumentNullException("argument52");
+            var actualException = new ArgumentNullException("argument52");
 
-            NUnit.Framework.Assert.Throws<AssertFailedException>(constraint.Verify);
+            NUnit.Framework.Assert.Throws<AssertFailedException>(() => constraint.Verify(actualException));
         }
 
         [Test]
         public void Verify_ExceptionThrownAndMessageContainsExpectedStrng_DoesnThrowExpection()
         {
             var constraint = CreateConstraint(typeof(ArgumentNullException), "argument1");
-            constraint.ActualException = new ArgumentNullException("argument1");
+            var actualException = new ArgumentNullException("argument1");
 
-            constraint.Verify();
+            constraint.Verify(actualException);
         }
         
         private ExpectedExceptionConstraint CreateConstraint(Type expectedExceptionType, string exceptionMessageShouldContain = null)

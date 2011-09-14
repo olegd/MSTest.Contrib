@@ -59,8 +59,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssertTests_Throws.cs" />
-    <Compile Include="ExpectedExceptionConstraintTests.cs" />
+    <Compile Include="AssertTests.cs" />
+    <Compile Include="Constraint\ExpectedExceptionConstraintTests.cs" />
+    <Compile Include="Constraint\ObjectsAreEqualTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

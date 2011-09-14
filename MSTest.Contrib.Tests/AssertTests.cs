@@ -12,11 +12,9 @@ namespace MSTest.Contrib.Tests
         {
             var constraintMock = new Mock<ExpectedExceptionConstraint>(typeof(ArgumentException), "");
             
-            Assert.Throws(constraintMock.Object,
-                () => { throw new ArgumentException(); }
-            );
+            Assert.Throws(() => { throw new ArgumentException(); }, constraintMock.Object);
 
-            constraintMock.Verify(x => x.Verify(), Times.Once());
+            constraintMock.Verify(x => x.Verify(It.IsAny<ArgumentException>()), Times.Once());
         }
 
         [Test]
@@ -25,11 +23,20 @@ namespace MSTest.Contrib.Tests
             var constraintMock = new Mock<ExpectedExceptionConstraint>(typeof(ArgumentException), "");
 
             bool actionWasInvoked = false;
-            Assert.Throws(constraintMock.Object,
-                () => { actionWasInvoked = true; }
-            );
+            Assert.Throws(() => { actionWasInvoked = true; }, constraintMock.Object);
 
             Assert.IsTrue(actionWasInvoked);
+        }
+
+        [Test]
+        public void That_CallsVerifyOnConstraint()
+        {
+            var constraintMock = new Mock<IConstraint>();
+            const string actualObject = "actual object";
+
+            Assert.That(actualObject, constraintMock.Object);
+
+            constraintMock.Verify(x => x.Verify(actualObject), Times.Once());
         }
     }
 }

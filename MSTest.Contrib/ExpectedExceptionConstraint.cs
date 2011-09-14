@@ -6,37 +6,38 @@ namespace MSTest.Contrib
     {
         public Type ExpectedException;
         public string ExceptionMessageShouldContain { get; set; }
-        public Exception ActualException { get; set; }
-
+        
         public ExpectedExceptionConstraint(Type expectedException, string exceptionMessageShouldContain = null)
         {
             ExpectedException = expectedException;
             ExceptionMessageShouldContain = exceptionMessageShouldContain;
         }
 
-        public virtual void Verify()
+        public virtual void Verify(object actual)
         {
-            if (ActualException == null)
+            if (actual == null)
             {
                 throw new AssertFailedException(
                     "Expected exception of type: {0}, but exception wasn't thrown".With(ExpectedException));
             }
 
-            if (ExpectedException != ActualException.GetType())
+            var actualException = (Exception) actual;
+
+            if (ExpectedException != actual.GetType())
             {
                 throw new AssertFailedException(
                     "Expected exception of type: {0}, but exception of type: {1} was thrown"
-                        .With(ExpectedException, ActualException.GetType()));
+                        .With(ExpectedException, actual.GetType()));
             }
 
             if (!string.IsNullOrWhiteSpace(ExceptionMessageShouldContain))
             {
-                bool actualMessageContainsExpectedString = ActualException.Message.Contains(ExceptionMessageShouldContain);
+                bool actualMessageContainsExpectedString = actualException.Message.Contains(ExceptionMessageShouldContain);
                 if (actualMessageContainsExpectedString == false)
                 {
                     throw new AssertFailedException(
                         "Actual exception message: {0}, does not contain expected string: {1}"
-                            .With(ActualException.Message, ExceptionMessageShouldContain)
+                            .With(actualException.Message, ExceptionMessageShouldContain)
                         );
                 }
             }

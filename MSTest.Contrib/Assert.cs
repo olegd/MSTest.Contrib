@@ -5,24 +5,30 @@ namespace MSTest.Contrib
 {
     public class Assert
     {
-        public static void Throws(ExpectedExceptionConstraint constraint, Action action)
+        public static void Throws(Action action, IConstraint constraint)
         {
+            Exception actualException = null;
             try
             {
                 action.Invoke();
             }
             catch (Exception ex)
             {
-                constraint.ActualException = ex;
+                actualException = ex;
             }
-            constraint.Verify();
+            constraint.Verify(actualException);
         }
 
         public static void Throws<T>(Action action, string expectedExceptionMessage = null) 
             where T: Exception
         {
             var constraint = new ExpectedExceptionConstraint(typeof(T), expectedExceptionMessage);
-            Throws(constraint, action);
+            Throws(action, constraint);
+        }
+
+        public static void That(object actualObject, IConstraint constraint)
+        {
+            constraint.Verify(actualObject);
         }
         
         #region MSTest Asserts
